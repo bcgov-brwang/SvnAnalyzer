@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,8 @@ namespace SvnSolution
                 if (!packages.Contains(package + "." + dicPackageVersion[package]))
                 {
                     Console.WriteLine("Package: " + package + " Version:" + dicPackageVersion[package] + " is missing...");
+                    Console.WriteLine("Installing " + package + " of version " + dicPackageVersion[package]);
+                    InstallPackage(package, dicPackageVersion[package]);
                     count++;
                 }
             }
@@ -126,6 +129,32 @@ namespace SvnSolution
 
 
             return dicPackageVersion;
+
+        }
+
+        static void InstallPackage(string package, string version)
+        {
+            //c:\software\nuget install Autofac -Version 4.6.2 -OutputDirectory C:\Users\BRWANG\projects\PTM\PTDW\src\PTDW\packages
+
+            //string command = @"c:\software\nuget.exe ";
+            string args = null;
+            args += "install ";
+            args += package;
+            args += " -Version ";
+            args += version;
+            args += " -OutputDirectory ";
+            args += rootPath;
+            args += @"\packages";
+
+            string nuget = @"c:\software\nuget.exe";
+            
+
+            
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = nuget;
+            startInfo.Arguments = args;
+            Process.Start(startInfo);
 
         }
     }
